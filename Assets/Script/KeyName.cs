@@ -10,24 +10,33 @@
 /* Script Overview: 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-using UnityEngine;
-using UnityEngine.UI;
-using System.Collections;
+public enum KeyName
+{
+    None,
 
-public class UIInput : MonoBehaviour {
+    Number_0,
+    Number_1,
+    Number_2,
+    Number_3,
+    Number_4,
+    Number_5,
+    Number_6,
+    Number_7,
+    Number_8,
+    Number_9,
+    Number_point,
 
-	void Awake () 
-	{
-		
-	}
+    Operator_Addition,
+    Operator_Subtract,
+    Operator_Multiply,
+    Operator_Division,
 
-	void Start () 
-	{
-		
-	}
+    Bracket_Left,
+    Bracket_Right,
 
-	void Update () 
-	{
-		
-	}
+    GetResult,
+
+    Clear,
+
+    Back,
 }

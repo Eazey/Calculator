@@ -10,24 +10,16 @@
 /* Script Overview: 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-using UnityEngine;
-using UnityEngine.UI;
-using System.Collections;
+public enum KeyType
+{
+    None,
 
-public class UIManager : MonoBehaviour {
-
-	void Awake () 
-	{
-		
-	}
-
-	void Start () 
-	{
-		
-	}
-
-	void Update () 
-	{
-		
-	}
+    NumberKey,
+    NumberPointKey,
+    OperatorKey,
+    BacketLeftKey,
+    BacketRightKey,
+    ResultKey,
+    ClearKey,
+    BackKey,
 }
