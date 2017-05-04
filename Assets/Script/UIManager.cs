@@ -40,7 +40,7 @@ public class UIManager
 
     public void InputOperationName(KeyName name)
     {
-        KeyType type = KeyData.GetKeyTypeByName(name);
+        KeyType type = CalculatorData.GetKeyTypeByName(name);
 
         switch(type)
         {
@@ -89,7 +89,9 @@ public class UIManager
     /// </summary>
     private void GetResult()
     {
-        showContent.text = inputRegular.GetResultContent(88.8f);
+        EquationReguler er = new EquationReguler(showContent.text);
+        var result = er.GetResult();
+        showContent.text = inputRegular.GetResultContent(result);
     }
 
     private void Clear()

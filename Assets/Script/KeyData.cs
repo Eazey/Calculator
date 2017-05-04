@@ -12,74 +12,79 @@
 
 using System.Collections.Generic;
 
-public static class KeyData
+public static class CalculatorData
 {
-    public static readonly Dictionary<KeyName, string> operationDic;
+    public static readonly Dictionary<KeyName, char> operationDic;
     private static List<KeyName> Keys = null;
-    private static List<string> Values = null;
+    private static List<char> Values = null;
 
     #region 键值常量
-    private const string NUMBER_0 = "0";
-    private const string NUMBER_1 = "1";
-    private const string NUMBER_2 = "2";
-    private const string NUMBER_3 = "3";
-    private const string NUMBER_4 = "4";
-    private const string NUMBER_5 = "5";
-    private const string NUMBER_6 = "6";
-    private const string NUMBER_7 = "7";
-    private const string NUMBER_8 = "8";
-    private const string NUMBER_9 = "9";
+    private const char NUMBER_0 = '0';
+    private const char NUMBER_1 = '1';
+    private const char NUMBER_2 = '2';
+    private const char NUMBER_3 = '3';
+    private const char NUMBER_4 = '4';
+    private const char NUMBER_5 = '5';
+    private const char NUMBER_6 = '6';
+    private const char NUMBER_7 = '7';
+    private const char NUMBER_8 = '8';
+    private const char NUMBER_9 = '9';
 
-    private const string NUM_POINT = ".";
+    private const char NUMBER_POINT = '.';
 
-    private const string OPERATOR_ADDITION = "+";
-    private const string OPERATOR_SUBTRACT = "-";
-    private const string OPERATOR_MULTIPLY = "*";
-    private const string OPERATOR_DIVISION = "/";
+    private const char OPERATOR_ADDITION = '+';
+    private const char OPERATOR_SUBTRACT = '-';
+    private const char OPERATOR_MULTIPLY = '*';
+    private const char OPERATOR_DIVISION = '/';
 
-    private const string BACKET_LEFT = "(";
-    private const string BACKET_RIGHT = ")";
+    private const char BACKET_LEFT = '(';
+    private const char BACKET_RIGHT = ')';
     #endregion
 
-    static KeyData()
+
+    #region 特殊值常量
+    private const string ERROR_EQUATION = "表达式错误";
+    #endregion
+
+    static CalculatorData()
     {
-        operationDic = new Dictionary<KeyName, string>
+        operationDic = new Dictionary<KeyName, char>
         {
-            {KeyName.Number_0, "0"},
-            {KeyName.Number_1, "1"},
-            {KeyName.Number_2, "2"},
-            {KeyName.Number_3, "3"},
-            {KeyName.Number_4, "4"},
-            {KeyName.Number_5, "5"},
-            {KeyName.Number_6, "6"},
-            {KeyName.Number_7, "7"},
-            {KeyName.Number_8, "8"},
-            {KeyName.Number_9, "9"},
-            {KeyName.Number_point, "."},
+            {KeyName.Number_0, NUMBER_0},
+            {KeyName.Number_1, NUMBER_1},
+            {KeyName.Number_2, NUMBER_2},
+            {KeyName.Number_3, NUMBER_3},
+            {KeyName.Number_4, NUMBER_4},
+            {KeyName.Number_5, NUMBER_5},
+            {KeyName.Number_6, NUMBER_6},
+            {KeyName.Number_7, NUMBER_7},
+            {KeyName.Number_8, NUMBER_8},
+            {KeyName.Number_9, NUMBER_9},
+            {KeyName.Number_point, NUMBER_POINT},
 
-            {KeyName.Operator_Addition, "+"},
-            {KeyName.Operator_Subtract, "-"},
-            {KeyName.Operator_Multiply, "*"},
-            {KeyName.Operator_Division, "/"},
+            {KeyName.Operator_Addition, OPERATOR_ADDITION},
+            {KeyName.Operator_Subtract, OPERATOR_SUBTRACT},
+            {KeyName.Operator_Multiply, OPERATOR_MULTIPLY},
+            {KeyName.Operator_Division, OPERATOR_DIVISION},
 
-            {KeyName.Bracket_Left, "("},
-            {KeyName.Bracket_Right, ")"},
+            {KeyName.Bracket_Left, BACKET_LEFT},
+            {KeyName.Bracket_Right, BACKET_RIGHT},
         };
 
         Keys = new List<KeyName>(operationDic.Keys);
-        Values = new List<string>(operationDic.Values);
+        Values = new List<char>(operationDic.Values);
     }
 
-    public static string GetKeyValueByName(KeyName keyName)
+    public static char GetKeyValueByName(KeyName keyName)
     {
         if (!Keys.Contains(keyName))
-            return null;
+            return '\0';
 
-        string operation = operationDic[keyName];
+        char operation = operationDic[keyName];
         return operation;
     }
 
-    public static KeyName GetKeyNameByValue(string value)
+    public static KeyName GetKeyNameByValue(char value)
     {
         if (!Values.Contains(value))
             return KeyName.None;
@@ -88,7 +93,7 @@ public static class KeyData
         return Keys[index];
     }
 
-    public static KeyType GetKeyTypeByValue(string value)
+    public static KeyType GetKeyTypeByValue(char value)
     {
         KeyName name = GetKeyNameByValue(value);
         KeyType type = GetKeyTypeByName(name);
@@ -138,5 +143,10 @@ public static class KeyData
         }
 
         return KeyType.None;
+    }
+
+    public static string GetErrorInfo()
+    {
+        return ERROR_EQUATION;
     }
 }

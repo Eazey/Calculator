@@ -16,9 +16,11 @@ using UnityEngine;
 
 public class InputRegular
 {
-    private readonly string num_zero;
+    private readonly char num_zero;
+    private readonly char magic_value = '1';
+    private readonly string errorInfo;
     private string defaultNum;
-    private string bufferStr = KeyData.GetKeyValueByName(KeyName.Number_0);
+    private string bufferStr = CalculatorData.GetKeyValueByName(KeyName.Number_0).ToString();
     private KeyType bufferType = KeyType.None;
 
     /// <summary>
@@ -26,23 +28,27 @@ public class InputRegular
     /// </summary>
     public InputRegular()
     {
-        num_zero = KeyData.GetKeyValueByName(KeyName.Number_0);
-        defaultNum = KeyData.GetKeyValueByName(KeyName.Number_0);
+        num_zero = CalculatorData.GetKeyValueByName(KeyName.Number_0);
+        defaultNum = num_zero.ToString();
+        errorInfo = CalculatorData.GetErrorInfo();
     }
 
-    public string GetResultContent(double result)
+    public string GetResultContent(string result)
     {
-        defaultNum = result.ToString();
+        defaultNum = result;
 
         bufferStr = defaultNum;
-        bufferType = KeyType.NumberKey;
+        if (defaultNum != errorInfo)
+            bufferType = KeyType.NumberKey;
+        else
+            bufferType = KeyType.None;
 
         return defaultNum;
     }
 
     public string ClearContent()
     {
-        defaultNum = num_zero;
+        defaultNum = num_zero.ToString();
 
         bufferStr = defaultNum;
         bufferType = KeyType.NumberKey;
@@ -54,38 +60,41 @@ public class InputRegular
     {
         if (content.Length == 1)
         {
-            bufferStr = num_zero;
-            bufferType = KeyData.GetKeyTypeByValue(num_zero);
-            return num_zero;
+            bufferStr = num_zero.ToString();
+            bufferType = CalculatorData.GetKeyTypeByValue(num_zero);
+            return num_zero.ToString();
         }
 
         Stack<char> characters = new Stack<char>(content.ToCharArray());
         characters.Pop();
 
         char Pop_Char = characters.Peek();
-        string Pop_String = new string(Pop_Char, 1);
 
-        if (Pop_String == num_zero)
-            Pop_String = "1";
+        if (Pop_Char == num_zero)
+            Pop_Char = magic_value;
 
-        bufferStr = Pop_String;
-        bufferType = KeyData.GetKeyTypeByValue(Pop_String);
+        bufferStr = Pop_Char.ToString();
+        bufferType = CalculatorData.GetKeyTypeByValue(Pop_Char);
 
         var outCharacters = characters.ToArray();
         Array.Reverse(outCharacters);
+
         return new string(outCharacters);
     }
 
     public string AddContent(string content, KeyName name, KeyType type)
     {
-        string s = KeyData.GetKeyValueByName(name);
+        if (defaultNum == errorInfo)
+            return content;
+
+        char s = CalculatorData.GetKeyValueByName(name);
 
         if (content == defaultNum)
         {
             if (AddOnDefalut(s, type))
                 content += s;
             else
-                content = s;
+                content = s.ToString();
         }
         else
         {
@@ -95,7 +104,7 @@ public class InputRegular
         return content;
     }
 
-    private bool AddOnDefalut(string operation, KeyType type)
+    private bool AddOnDefalut(char operation, KeyType type)
     {
         Debug.Log("AddOnEquation():" + " bufferStr = " + bufferStr + ", bufferType = " + bufferType.ToString());
         Debug.Log("AddOnDefalut():" + " operation = " + operation + " type = " + type.ToString());
@@ -116,31 +125,35 @@ public class InputRegular
                 break;
         }
 
-        bufferStr = operation;
+        bufferStr = operation.ToString();
         bufferType = type;
 
         return isAdd;
     }
 
-    private bool AddOnEquation(string operation, KeyType type)
+    private bool AddOnEquation(char operation, KeyType type)
     {
         Debug.Log("AddOnEquation():" + " bufferStr = " + bufferStr + ", bufferType = " + bufferType.ToString());
         Debug.Log("AddOnEquation():" + " operation = " + operation + ", type = " + type.ToString());
 
-        if (bufferType == KeyType.NumberKey && type == KeyType.NumberKey)
+        if (bufferType == KeyType.NumberKey && (type == KeyType.NumberKey || type == KeyType.NumberPointKey))
         {
-            if (bufferStr == num_zero)
+            if (bufferStr == num_zero.ToString())
             {
                 return false;
             }
             else
             {
+                char point = CalculatorData.GetKeyValueByName(KeyName.Number_point);
+                if (bufferStr.Contains(point.ToString()) && type == KeyType.NumberPointKey)
+                    return false;
+
                 bufferStr += operation;
                 return true;
             }
-        }
+        }  
 
-        bufferStr = operation;
+        bufferStr = operation.ToString();
         bufferType = type;
         return true;
     }
