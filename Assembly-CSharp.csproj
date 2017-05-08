@@ -47,9 +47,9 @@
   <ItemGroup>
      <Compile Include="Assets\Scene\Test.cs" />
      <Compile Include="Assets\Script\CalculateAlgorithm.cs" />
+     <Compile Include="Assets\Script\CalculatorData.cs" />
      <Compile Include="Assets\Script\EquationReguler.cs" />
      <Compile Include="Assets\Script\InputReguler.cs" />
-     <Compile Include="Assets\Script\KeyData.cs" />
      <Compile Include="Assets\Script\KeyName.cs" />
      <Compile Include="Assets\Script\KeyType.cs" />
      <Compile Include="Assets\Script\UIInput.cs" />

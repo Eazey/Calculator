@@ -54,49 +54,64 @@ public class EquationReguler {
     {
         var bufferType = KeyType.None;
 
+        var bracketLeft_Num = 0;
+        var bracketRight_Num = 0;
+
         var charactors = equation.ToCharArray();
         foreach(var c in charactors)
         {
-            var currentType = CalculatorData.GetKeyTypeByValue(c);
+            var newType = CalculatorData.GetKeyTypeByValue(c);
 
             Debug.Log("bufferType is " + bufferType);
-            Debug.Log("currentType is " + currentType);
+            Debug.Log("currentType is " + newType);
 
-            switch(bufferType)
+            if (newType == KeyType.BacketLeftKey)
+                bracketLeft_Num++;
+            if (newType == KeyType.BacketRightKey)
+                bracketRight_Num++;
+
+            switch (bufferType)
             {
                 case KeyType.None:
-                    if (currentType != KeyType.NumberKey && currentType != KeyType.BacketLeftKey)
+                    if (newType != KeyType.NumberKey && newType != KeyType.BacketLeftKey)
                         return false;
                     break;
 
                 case KeyType.NumberKey:
-                    if (currentType == KeyType.BacketLeftKey)
+                    if (newType == KeyType.BacketLeftKey)
                         return false;
                     break;
 
                 case KeyType.NumberPointKey:
-                    if (currentType != KeyType.NumberKey)
+                    if (newType != KeyType.NumberKey)
                         return false;
                     break;
 
                 case KeyType.OperatorKey:
-                    if (currentType != KeyType.NumberKey && currentType != KeyType.BacketLeftKey)
+                    if (newType != KeyType.NumberKey && newType != KeyType.BacketLeftKey)
                         return false;
                     break;
 
                 case KeyType.BacketLeftKey:
-                    if (currentType != KeyType.NumberKey)
+                    if (newType != KeyType.NumberKey)
                         return false;
                     break;
 
                 case KeyType.BacketRightKey:
-                    if (currentType != KeyType.OperatorKey)
+                    if (newType != KeyType.OperatorKey)
                         return false;
                     break;
             }
 
-            bufferType = currentType;
+            bufferType = newType;
         }
+
+        if (bufferType == KeyType.BacketLeftKey || bufferType == KeyType.OperatorKey)
+            return false;
+
+        if (bracketLeft_Num != bracketRight_Num)
+            return false;
+
         return true;
     }
 
@@ -176,7 +191,6 @@ public class EquationReguler {
             operatorsStack.Peek() != CalculatorData.GetKeyValueByName(KeyName.Bracket_Left))
         {
             var oldOperator = operatorsStack.Peek();
-            var oldName = CalculatorData.GetKeyNameByValue(oldOperator);
             var oldLevel = OperatorFactory.OperatorPriority(oldOperator);
 
             if (newLevel <= oldLevel)
@@ -228,8 +242,8 @@ public class EquationReguler {
         }
         result = numbersStack.Pop();
 
-        Debug.LogError(operatorsStack.Count);
-        Debug.LogError(numbersStack.Count);
+        Debug.LogError("OperatorsStack is " + operatorsStack.Count);
+        Debug.LogError("OperatorsStack is " + numbersStack.Count);
 
         return result;
     }

@@ -40,63 +40,7 @@ public class UIManager
 
     public void InputOperationName(KeyName name)
     {
-        KeyType type = CalculatorData.GetKeyTypeByName(name);
-
-        switch(type)
-        {
-            case KeyType.NumberKey:
-            case KeyType.NumberPointKey:
-            case KeyType.OperatorKey:
-            case KeyType.BacketLeftKey:
-            case KeyType.BacketRightKey:
-                AddToDisplay(name, type);
-                break;
-
-            case KeyType.BackKey:
-                SubFormDisplay();
-                break;
-
-            case KeyType.ClearKey:
-                Clear();
-                break;
-
-            case KeyType.ResultKey:
-                GetResult();
-                break;
-        }
-    }
-
-    /// <summary>
-    /// 添加按钮字符到屏幕显示上
-    /// </summary>
-    /// <param name="name"> 字符定义名称 </param>
-    /// <param name="type"> 字符所属类型 </param>
-    private void AddToDisplay(KeyName name, KeyType type)
-    {
-        showContent.text = inputRegular.AddContent(showContent.text, name, type);   
-    }
-
-    /// <summary>
-    /// 从屏幕显示上删减字符
-    /// </summary>
-    private void SubFormDisplay()
-    {
-        showContent.text = inputRegular.SubContent(showContent.text);
-    }
-
-    /// <summary>
-    /// 获取运算结果
-    /// </summary>
-    private void GetResult()
-    {
-        EquationReguler er = new EquationReguler(showContent.text);
-        var result = er.GetResult();
-        showContent.text = inputRegular.GetResultContent(result);
-    }
-
-    private void Clear()
-    {
-        showContent.text = inputRegular.ClearContent();
+        showContent.text = inputRegular.UpdateContent(showContent.text, name);
     }
 }
 
