@@ -144,6 +144,9 @@ public class InputRegular
 
     private string SubContent(string content)
     {
+        if (content == errorInfo)
+            return content;
+
         if (content.Length == 1)
         {
             bufferStr = num_zero.ToString();
